@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+   <link rel="stylesheet" href="style.css">
+   <script src="https://unpkg.com/babel-standalone@6/babel.min.js" crossorigin></script>
+   <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+   <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+   <script type="text/babel">
+      function Person (props) { return (
+      <div className="person">
+         <h1>{props.name}</h1>
+         <p>Your age: {props.age}</p>
+      </div>
+      ); } var app = (
+      <div>
+         <Person name="Max" age="28" />
+         <Person name="Adam" age="26" />
+      </div>
+      ); ReactDOM.render(app, document.querySelector('#app'));
+   </script>
+   <title>React</title>
+</head>
+
+<body>
+   <div id="app"></div>
+
+   <div class="person">
+      <h1>Max</h1>
+      <p>Your age: 28</p>
+   </div>
+
+   <div class="person">
+      <h1>Adam</h1>
+      <p>Your age: 26</p>
+   </div>
+</body>
+
+</html>
