@@ -7,10 +7,11 @@ export const authStart = () => {
    };
 };
 
-export const authSuccess = (authData) => {
+export const authSuccess = (token, userId) => {
    return {
-      type: actionTypes.AUTH_FAIL,
-      authData: authData
+      type: actionTypes.AUTH_SUCCESS,
+      idToken: token,
+      userId: userId
    };
 };
 
@@ -21,7 +22,21 @@ export const authFail = (error) => {
    };
 };
 
-export const auth = (email, password) => {
+export const logout = () => {
+      return {
+            type: actionTypes.AUTH_LOGOUT
+      };
+};
+
+export const checkAuthTimeout = (expireTime) => {
+      return dispatch => {
+            setTimeout(() => {
+                  dispatch(logout());
+            }, expireTime * 1000);
+      }
+}
+
+export const auth = (email, password, isSignup) => {
    return dispatch => {
       dispatch(authStart());
       const authData = {
@@ -29,14 +44,19 @@ export const auth = (email, password) => {
          password: password,
          returnSecureToken: true
       };
-      axios.post('https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyApVPoMtpOD1cTGxxK8sE9UYa--ch6wJIY', authData)
+      let url = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyApVPoMtpOD1cTGxxK8sE9UYa--ch6wJIY';
+      if (!isSignup) {
+            url = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyApVPoMtpOD1cTGxxK8sE9UYa--ch6wJIY';
+      }
+      axios.post(url, authData)
          .then(res => {
             console.log(res);
-            dispatch(authSuccess(res.data))
+            dispatch(authSuccess(res.data.idToken, res.data.localId));
+            dispatch(checkAuthTimeout(res.data.expiresIn));
          })
          .catch(err => {
             console.log(err);
-            dispatch(authFail(err));
+            dispatch(authFail(err.response.data.error));
          })
    };
 };
