@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<NavigationItem /> should render an li element and NavLink component to match the snapshot 1`] = `
+<navigationItem
+  link="/test"
+>
+  Test
+</navigationItem>
+`;
